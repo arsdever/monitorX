@@ -57,38 +57,38 @@ void Comport::close_port()
 		CloseHandle(__handle);
 }
 
-unsigned __int32 Comport::write_data(QByteArray const &data)
+uint32_t Comport::write_data(QByteArray const &data)
 {
 	DWORD written;
 	WriteFile(__handle, data, data.size(), &written, 0);
-	return (unsigned __int32)written;
+	return (uint32_t)written;
 }
 
-unsigned __int32 Comport::write_data(const char *data, unsigned __int32 size)
+uint32_t Comport::write_data(const char *data, uint32_t size)
 {
 	DWORD written;
 	WriteFile(__handle, data, size, &written, 0);
-	return (unsigned __int32)written;
+	return (uint32_t)written;
 }
 
-unsigned __int32 Comport::read_data(QByteArray &data)
+uint32_t Comport::read_data(QByteArray &data)
 {
 	DWORD readen;
 	ReadFile(__handle, data.data(), data.size(), &readen, 0);
-	return (unsigned __int32)readen;
+	return (uint32_t)readen;
 }
 
-unsigned __int32 Comport::read_data(char *&data, unsigned __int32 size)
+uint32_t Comport::read_data(char *&data, uint32_t size)
 {
 	DWORD readen;
 	data = new char[size];
 	ReadFile(__handle, data, size, &readen, 0);
-	return (unsigned __int32)readen;
+	return (uint32_t)readen;
 }
 
 void Comport::updateComMap()
 {
-	__int32 buffer_size = 256;
+	int32_t buffer_size = 256;
 	char* result = new char[buffer_size];
 	for (int i = 0; i < 256; ++i)
 	{

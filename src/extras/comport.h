@@ -15,10 +15,10 @@ public:
 	Comport(std::string const& port_name, int baudrate = 9600, int bytesize = 8, int stopbits = 1, int parity = 0, int dtrcontrol = DTR_CONTROL_ENABLE);
 	~Comport();
 
-	unsigned __int32 write_data(QByteArray const &data);
-	unsigned __int32 write_data(const char *data, unsigned __int32 size);
-	unsigned __int32 read_data(QByteArray &data);
-	unsigned __int32 read_data(char *&data, unsigned __int32 size);
+	uint32_t write_data(QByteArray const &data);
+	uint32_t write_data(const char *data, uint32_t size);
+	uint32_t read_data(QByteArray &data);
+	uint32_t read_data(char *&data, uint32_t size);
 
 private:
 	void open_port();

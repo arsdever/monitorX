@@ -2,19 +2,20 @@
 
 #include <windows.h>
 #include <cmath>
+#include <stdint.h>
 
-static unsigned __int64 FileTimeToInt64(const FILETIME & ft) { return (((unsigned __int64)(ft.dwHighDateTime)) << 32) | ((unsigned __int64)ft.dwLowDateTime); }
+static uint64_t FileTimeToInt64(const FILETIME & ft) { return (((uint64_t)(ft.dwHighDateTime)) << 32) | ((uint64_t)ft.dwLowDateTime); }
 
-static void CalculateCPULoad(unsigned __int64 idleTicks, unsigned __int64 kernelTicks, unsigned __int64 userTicks, float *idleLoad, float *kernelLoad, float *userLoad)
+static void CalculateCPULoad(uint64_t idleTicks, uint64_t kernelTicks, uint64_t userTicks, float *idleLoad, float *kernelLoad, float *userLoad)
 {
-	static unsigned __int64 _previousKernelTicks = 0;
-	static unsigned __int64 _previousUserTicks = 0;
-	static unsigned __int64 _previousIdleTicks = 0;
+	static uint64_t _previousKernelTicks = 0;
+	static uint64_t _previousUserTicks = 0;
+	static uint64_t _previousIdleTicks = 0;
 
-	unsigned __int64 kernelTicksSinceLastTime = kernelTicks - _previousKernelTicks;
-	unsigned __int64 userTicksSinceLastTime = userTicks - _previousUserTicks;
-	unsigned __int64 idleTicksSinceLastTime = idleTicks - _previousIdleTicks;
-	unsigned __int64 totalTicksSinceLastTime = kernelTicksSinceLastTime + userTicksSinceLastTime;
+	uint64_t kernelTicksSinceLastTime = kernelTicks - _previousKernelTicks;
+	uint64_t userTicksSinceLastTime = userTicks - _previousUserTicks;
+	uint64_t idleTicksSinceLastTime = idleTicks - _previousIdleTicks;
+	uint64_t totalTicksSinceLastTime = kernelTicksSinceLastTime + userTicksSinceLastTime;
 
 	*kernelLoad = (kernelTicksSinceLastTime > 0 ? ((double)(kernelTicksSinceLastTime - idleTicksSinceLastTime) / (double)totalTicksSinceLastTime) : 0.0);
 	*userLoad = (userTicksSinceLastTime > 0 ? ((double)userTicksSinceLastTime / (double)totalTicksSinceLastTime) : 0.0);
@@ -28,7 +29,7 @@ static void CalculateCPULoad(unsigned __int64 idleTicks, unsigned __int64 kernel
 	_previousIdleTicks = idleTicks;
 }
 
-void WriteSize(__int8& prescaler, __int16& size, unsigned __int64 value)
+void WriteSize(__int8& prescaler, __int16& size, uint64_t value)
 {
 	prescaler = 0;
 	while (value > 65535)
@@ -145,8 +146,8 @@ extern "C" API_EXPORT void GetHDDInfo(INFO *data)
 
 	DWORD sectors, bytes, clusters, total;
 	GetDiskFreeSpaceA("/", &sectors, &bytes, &clusters, &total);
-	unsigned __int64 totalSize = total;
-	unsigned __int64 freeSize = clusters;
+	uint64_t totalSize = total;
+	uint64_t freeSize = clusters;
 	totalSize *= bytes;
 	totalSize *= sectors;
 	freeSize *= bytes;

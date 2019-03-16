@@ -6,26 +6,26 @@
 std::ostream & operator << (std::ostream & strm, INFO const& info)
 {
 	strm << "{\n" << std::flush;
-	strm << "\t\"version\" : \"" << (__int32)info.version << "\"\n" << std::flush;
+	strm << "\t\"version\" : \"" << (int32_t)info.version << "\"\n" << std::flush;
 	strm << "\t\"date\" :\n" << std::flush;
 	strm << "\t{\n" << std::flush;
-	strm << "\t\t\"year\" : \"" << (__int32)info.year << "\"\n" << std::flush;
-	strm << "\t\t\"month\" : \"" << (__int32)info.month << "\"\n" << std::flush;
-	strm << "\t\t\"day\" : \"" << (__int32)info.day << "\"\n" << std::flush;
-	strm << "\t\t\"hour\" : \"" << (__int32)info.hour << "\"\n" << std::flush;
-	strm << "\t\t\"minute\" : \"" << (__int32)info.minu << "\"\n" << std::flush;
-	strm << "\t\t\"second\" : \"" << (__int32)info.sec << "\"\n" << std::flush;
+	strm << "\t\t\"year\" : \"" << (int32_t)info.year << "\"\n" << std::flush;
+	strm << "\t\t\"month\" : \"" << (int32_t)info.month << "\"\n" << std::flush;
+	strm << "\t\t\"day\" : \"" << (int32_t)info.day << "\"\n" << std::flush;
+	strm << "\t\t\"hour\" : \"" << (int32_t)info.hour << "\"\n" << std::flush;
+	strm << "\t\t\"minute\" : \"" << (int32_t)info.minu << "\"\n" << std::flush;
+	strm << "\t\t\"second\" : \"" << (int32_t)info.sec << "\"\n" << std::flush;
 	strm << "\t}\n" << std::flush;
-	strm << "\t\"memoryTotal\" : \"" << (__int32)info.memoryTotal << "\"\n" << std::flush;
-	strm << "\t\"memoryTotalPrescaler\" : \"" << (__int32)info.memoryTotalPrescaler << "\"\n" << std::flush;
-	strm << "\t\"memoryFree\" : \"" << (__int32)info.memoryFree << "\"\n" << std::flush;
-	strm << "\t\"memoryFreePrescaler\" : \"" << (__int32)info.memoryFreePrescaler << "\"\n" << std::flush;
-	strm << "\t\"hddTotal\" : \"" << (__int32)info.hddTotal << "\"\n" << std::flush;
-	strm << "\t\"hddTotalPrescaler\" : \"" << (__int32)info.hddTotalPrescaler << "\"\n" << std::flush;
-	strm << "\t\"hddFree\" : \"" << (__int32)info.hddFree << "\"\n" << std::flush;
-	strm << "\t\"hddFreePrescaler\" : \"" << (__int32)info.hddFreePrescaler << "\"\n" << std::flush;
-	strm << "\t\"cores\" : \"" << (__int32)info.cores << "\"\n" << std::flush;
-	strm << "\t\"cpuUsage\" : \"" << (__int32)info.cpuUsage << "\"\n" << std::flush;
+	strm << "\t\"memoryTotal\" : \"" << (int32_t)info.memoryTotal << "\"\n" << std::flush;
+	strm << "\t\"memoryTotalPrescaler\" : \"" << (int32_t)info.memoryTotalPrescaler << "\"\n" << std::flush;
+	strm << "\t\"memoryFree\" : \"" << (int32_t)info.memoryFree << "\"\n" << std::flush;
+	strm << "\t\"memoryFreePrescaler\" : \"" << (int32_t)info.memoryFreePrescaler << "\"\n" << std::flush;
+	strm << "\t\"hddTotal\" : \"" << (int32_t)info.hddTotal << "\"\n" << std::flush;
+	strm << "\t\"hddTotalPrescaler\" : \"" << (int32_t)info.hddTotalPrescaler << "\"\n" << std::flush;
+	strm << "\t\"hddFree\" : \"" << (int32_t)info.hddFree << "\"\n" << std::flush;
+	strm << "\t\"hddFreePrescaler\" : \"" << (int32_t)info.hddFreePrescaler << "\"\n" << std::flush;
+	strm << "\t\"cores\" : \"" << (int32_t)info.cores << "\"\n" << std::flush;
+	strm << "\t\"cpuUsage\" : \"" << (int32_t)info.cpuUsage << "\"\n" << std::flush;
 	return strm << "}\n" << std::flush;
 }
 char buffer[255];
