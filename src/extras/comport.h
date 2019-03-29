@@ -20,20 +20,22 @@ public:
 	uint32_t read_data(QByteArray &data);
 	uint32_t read_data(char *&data, uint32_t size);
 
-private:
+	bool is_opened() const;
+
 	void open_port();
-	void configurate();
 	void close_port();
+
+private:
+	bool configurate();
 
 private:
 	std::string __port_name;
 	bool __is_valid : 1;
 	HANDLE __handle;
 	DCB __default_settings;
+	bool __opened;
 
 public:
 	static void updateComMap();
 	static OrderedMap<QString, QString> s_comMap;
 };
-
-extern "C" EXTRAS_EXPORT void addMenu(QMenuBar *menuBar);

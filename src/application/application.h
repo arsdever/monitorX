@@ -4,6 +4,7 @@
 
 class Collector;
 class DeviceInformator;
+class Comport;
 
 class Application : public QMainWindow
 {
@@ -16,8 +17,10 @@ public:
 
 public slots:
 	void updateGraphs();
+	void connectToPort();
 
 private:
 	DeviceInformator *__informator;
 	Collector *__data_collector;
+	Comport *__comport;
 };
