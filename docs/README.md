@@ -1,4 +1,4 @@
-![monitorX](./images/icon.png)
+![monitorX](./images/icon_named.png)
 
 ## Introduction
 The purpose of this program is to monitor the devices, collect information, analyze them and notify if any problem.
