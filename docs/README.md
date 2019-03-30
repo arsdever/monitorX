@@ -10,7 +10,7 @@ There are downloads available for **Linux** and **Windows** machines. Here are f
 ## Instructions
 To use this software, you have to download the product from links [above](#Downloads). Here are detailed instructions on configurations for each module.
 
-- ### monitorX *host*
+- ### monitorX *Host*
 
     * **Windows** - This module doesn't need any configurations.
     * **Linux** - Set the `LD_LIBRARY_PATH` variable to the `<dir>/monitorX/build/lib` path relative this folder using the following command
