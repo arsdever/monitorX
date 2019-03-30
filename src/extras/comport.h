@@ -18,7 +18,7 @@ public:
   };
 
 public:
-  virtual ~Comport() { close_port(); }
+  virtual ~Comport() {}
 
   virtual uint32_t write_data(QByteArray const &data) = 0;
   virtual uint32_t write_data(const char *data, uint32_t size) = 0;
