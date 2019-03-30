@@ -3,6 +3,8 @@
 build
 GeneratedFiles
 uic_wrapper.sh
+Makefile
+!src/info_getter_api/Makefile
 
 # Created by https://www.gitignore.io/api/qt
 # Edit at https://www.gitignore.io/?templates=qt
