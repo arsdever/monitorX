@@ -11,6 +11,7 @@ Comport::Comport(std::string const& port_name, int baudrate, int bytesize, int s
 	: __port_name(port_name)
 	, __is_valid(false)
 	, __default_settings{ 0 }
+	, __opened(false)
 {
 	__default_settings.DCBlength = sizeof(DCB);
 	__default_settings.BaudRate = baudrate;
@@ -18,13 +19,16 @@ Comport::Comport(std::string const& port_name, int baudrate, int bytesize, int s
 	__default_settings.StopBits = stopbits;
 	__default_settings.Parity = parity;
 	__default_settings.fDtrControl = dtrcontrol;
-
-	open_port();
 }
 
 Comport::~Comport()
 {
 	close_port();
+}
+
+bool Comport::is_opened() const
+{
+	return __opened;
 }
 
 void Comport::open_port()
@@ -34,10 +38,14 @@ void Comport::open_port()
 	if (__handle == INVALID_HANDLE_VALUE)
 		__is_valid = false;
 	else
+	{
 		__is_valid = true;
+		__opened = true;
+		configurate();
+	}
 }
 
-void Comport::configurate()
+bool Comport::configurate()
 {
 	DCB settings{ 0 };
 	settings.DCBlength = sizeof(DCB);
@@ -48,13 +56,16 @@ void Comport::configurate()
 	settings.StopBits = __default_settings.StopBits;
 	settings.Parity = __default_settings.Parity;
 	settings.fDtrControl = __default_settings.fDtrControl;
-	SetCommState(__handle, &settings);
+	return SetCommState(__handle, &settings);
 }
 
 void Comport::close_port()
 {
 	if (__is_valid)
+	{
 		CloseHandle(__handle);
+		__opened = false;
+	}
 }
 
 uint32_t Comport::write_data(QByteArray const &data)
@@ -113,7 +124,7 @@ void Comport::updateComMap()
 	delete result;
 }
 
-extern "C" void addMenu(QMenuBar *menuBar)
+extern "C" EXTRAS_EXPORT void addMenu(QMenuBar *menuBar)
 {
 	if (menuBar == nullptr)
 		return;
@@ -152,4 +163,8 @@ extern "C" void addMenu(QMenuBar *menuBar)
 			QAction* pAction = comMenu->addAction(comport);
 		}
 	}
+}
+extern "C" EXTRAS_EXPORT Comport* openPort(QString const& portName)
+{
+	return new Comport(portName.toStdString(), 57600);
 }

@@ -1,6 +1,6 @@
 #include "device_informator.h"
 
-#include "../shared/data.h"
+#include "../client/data.h"
 #include <QLibrary>
 
 DeviceInformator::DeviceInformator()

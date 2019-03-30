@@ -129,6 +129,9 @@
     <ProjectReference Include="..\collector\collector.vcxproj">
       <Project>{5b71c7d6-3515-441a-99a7-61dd1982df72}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\extras\extras.vcxproj">
+      <Project>{b12702ad-abfb-343a-a199-8e24837244a3}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\grapher\grapher.vcxproj">
       <Project>{2b0666be-4ce6-471c-924e-eab1911ec783}</Project>
     </ProjectReference>
