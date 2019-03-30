@@ -3,7 +3,7 @@ OBJECTS := cpu_info_getter_linux.o
 CXX := g++
 LINK := g++
 LFLAGS        = -Wl,-rpath,/home/arsdever/qt5/qtbase/lib -shared -Wl,-soname,libcollector.so.1
-DEFINES := API_EXPORT
+DEFINES := -DAPI_LIB
 CXXFLAGS      = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 FLAGS := -std=c++11 -Wall
 DEL_FILE       = rm -f

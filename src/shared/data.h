@@ -15,6 +15,8 @@ enum PRESCALER
 struct INFO
 {
 	char signature[4];
+
+	// v1.0 (windows)
 	int16_t year;
 	int16_t memoryTotal;
 	int16_t memoryFree;
@@ -32,4 +34,8 @@ struct INFO
 	int8_t hddFreePrescaler;
 	int8_t cpuUsageUser;
 	int8_t cpuUsageKernel;
+
+	// v2.0 (windwos + linux)
+	int8_t processes;
+	int8_t *perCoreUsage;
 };

@@ -1,35 +1,23 @@
 #include "api.h"
-/*
-#include <windows.h>
+
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <unistd.h>
+#include <stdio.h>
 #include <cmath>
 #include <stdint.h>
+#include <cstring>
 
-static uint64_t FileTimeToInt64(const FILETIME &ft) { return (((uint64_t)(ft.dwHighDateTime)) << 32) | ((uint64_t)ft.dwLowDateTime); }
+#include <ctime>
 
-static void CalculateCPULoad(uint64_t idleTicks, uint64_t kernelTicks, uint64_t userTicks, float *idleLoad, float *kernelLoad, float *userLoad)
-{
-	static uint64_t _previousKernelTicks = 0;
-	static uint64_t _previousUserTicks = 0;
-	static uint64_t _previousIdleTicks = 0;
+#include <sys/sysinfo.h> // for getting ram information
+#include <sys/statvfs.h> // for getting hdd information
 
-	uint64_t kernelTicksSinceLastTime = kernelTicks - _previousKernelTicks;
-	uint64_t userTicksSinceLastTime = userTicks - _previousUserTicks;
-	uint64_t idleTicksSinceLastTime = idleTicks - _previousIdleTicks;
-	uint64_t totalTicksSinceLastTime = kernelTicksSinceLastTime + userTicksSinceLastTime;
+//static uint64_t FileTimeToInt64(const FILETIME &ft) { return (((uint64_t)(ft.dwHighDateTime)) << 32) | ((uint64_t)ft.dwLowDateTime); }
 
-	*kernelLoad = (kernelTicksSinceLastTime > 0 ? ((double)(kernelTicksSinceLastTime - idleTicksSinceLastTime) / (double)totalTicksSinceLastTime) : 0.0);
-	*userLoad = (userTicksSinceLastTime > 0 ? ((double)userTicksSinceLastTime / (double)totalTicksSinceLastTime) : 0.0);
-	*idleLoad = (idleTicksSinceLastTime > 0 ? ((double)idleTicksSinceLastTime / (double)totalTicksSinceLastTime) : 0.0);
-	//*kernelLoad = 0;
-	//*userLoad = 1.0 - ((userTicksSinceLastTime > 0) ? ((double)idleTicksSinceLastTime/ (kernelTicksSinceLastTime + userTicksSinceLastTime)) : 0.0);
-	//*idleLoad = 0;
-
-	_previousKernelTicks = kernelTicks;
-	_previousUserTicks = userTicks;
-	_previousIdleTicks = idleTicks;
-}
-
-void WriteSize(__int8 &prescaler, __int16 &size, uint64_t value)
+void WriteSize(int8_t &prescaler, int16_t &size, uint64_t value)
 {
 	prescaler = 0;
 	while (value > 65535)
@@ -59,7 +47,7 @@ extern "C" API_EXPORT void GetSignature(INFO *data)
 	data->signature[0] = 'I';
 	data->signature[1] = 'N';
 	data->signature[2] = 'F';
-	data->signature[3] = 'O';
+	data->signature[3] = '2';
 }
 
 extern "C" API_EXPORT void GetDateAndTime(INFO *data)
@@ -76,12 +64,11 @@ extern "C" API_EXPORT void GetDate(INFO *data)
 	if (data == nullptr)
 		return;
 
-	SYSTEMTIME date;
-	GetLocalTime(&date);
-
-	data->year = date.wYear;
-	data->month = date.wMonth;
-	data->day = date.wDay;
+	std::time_t time = std::time(0);
+	std::tm *now = std::localtime(&time);
+	data->year = now->tm_year + 1900;
+	data->month = now->tm_mon;
+	data->day = now->tm_wday;
 }
 
 extern "C" API_EXPORT void GetTime(INFO *data)
@@ -89,12 +76,11 @@ extern "C" API_EXPORT void GetTime(INFO *data)
 	if (data == nullptr)
 		return;
 
-	SYSTEMTIME time;
-	GetLocalTime(&time);
-
-	data->hour = time.wHour;
-	data->minu = time.wMinute;
-	data->sec = time.wSecond;
+	std::time_t time = std::time(0);
+	std::tm *now = std::localtime(&time);
+	data->hour = now->tm_hour;
+	data->minu = now->tm_min;
+	data->sec = now->tm_sec;
 }
 
 extern "C" API_EXPORT void GetHardwareInfo(INFO *data)
@@ -112,19 +98,75 @@ extern "C" API_EXPORT void GetCPUInfo(INFO *data)
 	if (data == nullptr)
 		return;
 
-	FILETIME idleTime, kernelTime, userTime;
-	SYSTEM_INFO sysInfo;
-	GetSystemInfo(&sysInfo);
-	float userLoad = -1;
-	float kernelLoad = -1;
-	float idleLoad = -1;
-	if (GetSystemTimes(&idleTime, &kernelTime, &userTime))
+	std::fstream cpu_info_file_stream;
+	cpu_info_file_stream.open("/proc/stat", std::fstream::in);
+
+	if (!cpu_info_file_stream.is_open())
+		return;
+
+	std::string line;
+	std::getline(cpu_info_file_stream, line);
+	data->cores = sysconf(_SC_NPROCESSORS_ONLN);
+	data->perCoreUsage = new int8_t[data->cores * 2];
+
+	while (line != "")
 	{
-		CalculateCPULoad(FileTimeToInt64(idleTime), FileTimeToInt64(kernelTime), FileTimeToInt64(userTime), &idleLoad, &kernelLoad, &userLoad);
+		std::stringstream line_stream(line);
+		std::string word;
+		line_stream >> word;
+		if (word.substr(0, 3) == "cpu")
+		{
+			static std::vector<uint64_t> _previousKernelTicks(1, 0);
+			static std::vector<uint64_t> _previousUserTicks(1, 0);
+			static std::vector<uint64_t> _previousTotalTicks(1, 0);
+
+			uint64_t user;
+			uint64_t nice;
+			uint64_t sys;
+			uint64_t idle;
+			uint64_t iowait;
+			uint64_t irq;
+			uint64_t softirq;
+
+			line_stream >> user >> nice >> sys >> idle >> iowait >> irq >> softirq;
+			uint64_t total = user + nice + sys + idle + iowait + irq + softirq;
+
+			int32_t index = -1;
+			if (word != "cpu")
+			{
+				std::stringstream cpu_id(word.substr(3));
+				cpu_id >> index;
+				if ((int32_t)_previousKernelTicks.size() <= index + 1)
+				{
+					_previousKernelTicks.resize(index + 2);
+					_previousTotalTicks.resize(index + 2);
+					_previousUserTicks.resize(index + 2);
+				}
+			}
+
+			uint64_t totalTickCount = total - _previousTotalTicks[index + 1];
+			uint64_t kernelTickCount = sys - _previousKernelTicks[index + 1];
+			uint64_t userTickCount = user - _previousUserTicks[index + 1];
+			double kernelUsage = (double)kernelTickCount / (double)totalTickCount;
+			double userUsage = (double)userTickCount / (double)totalTickCount;
+
+			if (!index)
+			{
+				data->cpuUsageKernel = kernelUsage * 100;
+				data->cpuUsageUser = userUsage * 100;
+			}
+			// else
+			// {
+			// 	data->perCoreUsage[index * 2] = kernelUsage * 100;
+			// 	data->perCoreUsage[index * 2 + 1] = userUsage * 100;
+			// }
+
+			_previousTotalTicks[index + 1] = total;
+			_previousKernelTicks[index + 1] = sys;
+			_previousUserTicks[index + 1] = user;
+		}
+		std::getline(cpu_info_file_stream, line);
 	}
-	data->cpuUsageUser = round(userLoad * 100);
-	data->cpuUsageKernel = round(kernelLoad * 100);
-	data->cores = sysInfo.dwNumberOfProcessors;
 }
 
 extern "C" API_EXPORT void GetRAMInfo(INFO *data)
@@ -132,11 +174,23 @@ extern "C" API_EXPORT void GetRAMInfo(INFO *data)
 	if (data == nullptr)
 		return;
 
-	MEMORYSTATUSEX memInfoEx = {sizeof MEMORYSTATUSEX};
-	GlobalMemoryStatusEx(&memInfoEx);
+	struct sysinfo info;
+	memset(&info, 0, sizeof(struct sysinfo));
+	if (sysinfo(&info))
+		return;
 
-	WriteSize(data->memoryTotalPrescaler, data->memoryTotal, memInfoEx.ullTotalPhys);
-	WriteSize(data->memoryFreePrescaler, data->memoryFree, memInfoEx.ullAvailPhys);
+	int8_t prescaler;
+	int16_t size;
+
+	uint64_t memTotal = info.totalram;
+	uint64_t memFree = info.freeram;
+	WriteSize(prescaler, size, memTotal);
+	data->memoryTotalPrescaler = prescaler;
+	data->memoryTotal = size;
+	WriteSize(prescaler, size, memFree);
+	data->memoryFreePrescaler = prescaler;
+	data->memoryFree = size;
+	data->processes = info.procs;
 }
 
 extern "C" API_EXPORT void GetHDDInfo(INFO *data)
@@ -144,15 +198,20 @@ extern "C" API_EXPORT void GetHDDInfo(INFO *data)
 	if (data == nullptr)
 		return;
 
-	DWORD sectors, bytes, clusters, total;
-	GetDiskFreeSpaceA("/", &sectors, &bytes, &clusters, &total);
-	uint64_t totalSize = total;
-	uint64_t freeSize = clusters;
-	totalSize *= bytes;
-	totalSize *= sectors;
-	freeSize *= bytes;
-	freeSize *= sectors;
+	struct statvfs fs_info;
+	memset(&fs_info, 0, sizeof(struct statvfs));
+	if (statvfs("/", &fs_info))
+		return;
 
-	WriteSize(data->hddTotalPrescaler, data->hddTotal, totalSize);
-	WriteSize(data->hddFreePrescaler, data->hddFree, freeSize);
-}*/
+	int8_t prescaler;
+	int16_t size;
+
+	uint64_t mem_free = fs_info.f_bavail * fs_info.f_bsize;
+	uint64_t mem_total = fs_info.f_blocks * fs_info.f_bsize;
+	WriteSize(prescaler, size, mem_total);
+	data->hddTotalPrescaler = prescaler;
+	data->hddTotal = size;
+	WriteSize(prescaler, size, mem_free);
+	data->hddFreePrescaler = prescaler;
+	data->hddFree = size;
+}
