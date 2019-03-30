@@ -14,7 +14,7 @@ HDDScreen::~HDDScreen() {}
 
 void HDDScreen::draw() const
 {
-    INFO *data = getDataSource();
+    const INFO *data = getDataSource();
     device()->setCursor(0, 0);
     device()->print("HDD Info");
     device()->setCursor(0, 1);

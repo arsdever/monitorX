@@ -37,5 +37,5 @@ struct INFO
 
 	// v2.0 (windwos + linux)
 	int8_t processes;
-	int8_t *perCoreUsage;
+	//int8_t *perCoreUsage;
 };

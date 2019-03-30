@@ -52,8 +52,8 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = comport.cpp 
-OBJECTS       = comport.o
+SOURCES       = comport_linux.cpp 
+OBJECTS       = comport_linux.o
 DIST          = ../../../qt5/qtbase/mkspecs/features/spec_pre.prf \
 		../../../qt5/qtbase/mkspecs/common/unix.conf \
 		../../../qt5/qtbase/mkspecs/common/linux.conf \
@@ -284,9 +284,9 @@ DIST          = ../../../qt5/qtbase/mkspecs/features/spec_pre.prf \
 		../../../qt5/qtbase/mkspecs/features/exceptions.prf \
 		../../../qt5/qtbase/mkspecs/features/yacc.prf \
 		../../../qt5/qtbase/mkspecs/features/lex.prf \
-		extras.pro comport.h \
+		extras.pro comport_linux.h \
 		extras_global.h \
-		ordered_map.h comport.cpp
+		ordered_map.h comport_linux.cpp
 QMAKE_TARGET  = extras
 DESTDIR       = ../../build/lib/
 TARGET        = libextras.so.1.0.0
@@ -808,8 +808,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../qt5/qtbase/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents comport.h extras_global.h ordered_map.h $(DISTDIR)/
-	$(COPY_FILE) --parents comport.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents comport_linux.h extras_global.h ordered_map.h $(DISTDIR)/
+	$(COPY_FILE) --parents comport_linux.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -860,7 +860,8 @@ compiler_clean: compiler_moc_predefs_clean
 
 ####### Compile
 
-comport.o: comport.cpp comport.h \
+comport_linux.o: comport_linux.cpp comport_win.h \
+		comport.h \
 		extras_global.h \
 		../../../qt5/qtbase/include/QtCore/qglobal.h \
 		../../../qt5/qtbase/src/corelib/global/qglobal.h \
@@ -1088,7 +1089,7 @@ comport.o: comport.cpp comport.h \
 		../../../qt5/qtbase/src/widgets/kernel/qactiongroup.h \
 		../../../qt5/qtbase/include/QtWidgets/QMenu \
 		../../../qt5/qtbase/include/QtWidgets/QAction
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o comport.o comport.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o comport_linux.o comport_linux.cpp
 
 ####### Install
 

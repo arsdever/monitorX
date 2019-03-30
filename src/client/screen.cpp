@@ -2,9 +2,9 @@
 
 #include <LiquidCrystal.h>
 
-const char Screen::arrow_up[8] = {0, 4, 4, 14, 14, 31, 31, 0};
-const char Screen::arrow_down[8] = {0, 31, 31, 14, 14, 4, 4, 0};
-const char Screen::fill[8] = {31, 31, 31, 31, 31, 31, 31, 31};
+uint8_t Screen::arrow_up[8] = {0, 4, 4, 14, 14, 31, 31, 0};
+uint8_t Screen::arrow_down[8] = {0, 31, 31, 14, 14, 4, 4, 0};
+uint8_t Screen::fill[8] = {31, 31, 31, 31, 31, 31, 31, 31};
 
 Screen::Screen(LiquidCrystal *lcd, uint8_t width, uint8_t height)
     : AbstractScreen(lcd, width, height)

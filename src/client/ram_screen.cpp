@@ -14,7 +14,7 @@ RAMScreen::~RAMScreen() {}
 
 void RAMScreen::draw() const
 {
-    INFO *data = getDataSource();
+    const INFO *data = getDataSource();
     device()->setCursor(0, 0);
     device()->print("RAM Info");
     device()->setCursor(0, 1);

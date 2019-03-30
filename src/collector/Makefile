@@ -1136,7 +1136,7 @@ device_informator.o: device_informator.cpp device_informator.h \
 		../../../qt5/qtbase/src/corelib/global/qversiontagging.h \
 		../shared/interfaces.h \
 		../shared/macros.h \
-		../shared/data.h \
+		../client/data.h \
 		../../../qt5/qtbase/include/QtCore/QLibrary \
 		../../../qt5/qtbase/include/QtCore/qlibrary.h \
 		../../../qt5/qtbase/src/corelib/plugin/qlibrary.h \

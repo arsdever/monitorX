@@ -19,9 +19,9 @@ public:
   uint8_t getScrollerPosition() const;
 
 private:
-  static const char fill[8];
-  static const char arrow_up[8];
-  static const char arrow_down[8];
+  static uint8_t fill[8];
+  static uint8_t arrow_up[8];
+  static uint8_t arrow_down[8];
 
   uint8_t __menu_count;
   uint8_t __visible_area_position;

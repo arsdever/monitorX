@@ -14,6 +14,9 @@ class Application : public QMainWindow
 public:
 	Application(QWidget *parent = nullptr);
 	void init();
+	void initMenuBar();
+
+	QString requirePortName();
 
 public slots:
 	void updateGraphs();

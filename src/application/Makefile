@@ -1288,7 +1288,7 @@ application.o: application.cpp application.h \
 		../collector/device_informator.h \
 		../shared/interfaces.h \
 		../shared/macros.h \
-		../shared/data.h \
+		../client/data.h \
 		cpu_grapher.h \
 		../grapher/grapher.h \
 		../grapher/grapher_global.h \

@@ -14,7 +14,7 @@ CPUScreen::~CPUScreen() {}
 
 void CPUScreen::draw() const
 {
-    INFO *data = getDataSource();
+    const INFO *data = getDataSource();
     device()->setCursor(0, 0);
     device()->print("CPU Info");
     device()->setCursor(0, 1);

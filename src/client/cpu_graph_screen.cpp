@@ -3,14 +3,14 @@
 #include "data.h"
 #include <LiquidCrystal.h>
 
-const uint8_t CPUGraphScreen::__1[8] = {0, 0, 0, 0, 0, 0, 0, 31};
-const uint8_t CPUGraphScreen::__2[8] = {0, 0, 0, 0, 0, 0, 31, 31};
-const uint8_t CPUGraphScreen::__3[8] = {0, 0, 0, 0, 0, 31, 31, 31};
-const uint8_t CPUGraphScreen::__4[8] = {0, 0, 0, 0, 31, 31, 31, 31};
-const uint8_t CPUGraphScreen::__5[8] = {0, 0, 0, 31, 31, 31, 31, 31};
-const uint8_t CPUGraphScreen::__6[8] = {0, 0, 31, 31, 31, 31, 31, 31};
-const uint8_t CPUGraphScreen::__7[8] = {0, 31, 31, 31, 31, 31, 31, 31};
-const uint8_t CPUGraphScreen::__8[8] = {31, 31, 31, 31, 31, 31, 31, 31};
+uint8_t CPUGraphScreen::__1[8] = {0, 0, 0, 0, 0, 0, 0, 31};
+uint8_t CPUGraphScreen::__2[8] = {0, 0, 0, 0, 0, 0, 31, 31};
+uint8_t CPUGraphScreen::__3[8] = {0, 0, 0, 0, 0, 31, 31, 31};
+uint8_t CPUGraphScreen::__4[8] = {0, 0, 0, 0, 31, 31, 31, 31};
+uint8_t CPUGraphScreen::__5[8] = {0, 0, 0, 31, 31, 31, 31, 31};
+uint8_t CPUGraphScreen::__6[8] = {0, 0, 31, 31, 31, 31, 31, 31};
+uint8_t CPUGraphScreen::__7[8] = {0, 31, 31, 31, 31, 31, 31, 31};
+uint8_t CPUGraphScreen::__8[8] = {31, 31, 31, 31, 31, 31, 31, 31};
 
 CPUGraphScreen::CPUGraphScreen(LiquidCrystal *lcd, uint8_t width, uint8_t height, INFO *data)
     : InfoScreen(lcd, width, height), __history(new uint8_t[width]{0})
@@ -28,7 +28,7 @@ void CPUGraphScreen::draw() const
         __history[i] = __history[i + 1];
     }
 
-    INFO *data = getDataSource();
+    const INFO *data = getDataSource();
     __history[width() - 1] = data->cpuUsageKernel + data->cpuUsageUser;
 
     device()->createChar(0, __1);
