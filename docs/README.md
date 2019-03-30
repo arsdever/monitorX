@@ -21,7 +21,7 @@ To use this software, you have to download the product from links [above](#Downl
 
 - ### monitorX *Arduino visualizer*
 
-    For this module you will need to upload code to an Atmega MCU. You can use [Arduino IDE](https://www.arduino.cc/en/Main/Software) to build and upload the code. *Binaries for some boards are included*. After this process open the [`monitorX host`](#monitorx-host) application and
+    For this module you will need to upload code to an Atmega MCU. You can use [Arduino IDE](https://www.arduino.cc/download) to build and upload the code. *Binaries for some boards are included*. After this process open the [`monitorX host`](#monitorx-host) application and
     
     * **Windows** - in `Connect` menu select the port to connect.
     * **Linux** - click `Connect` in menu bar and input the port's full path. E.g. `/dev/ttyS1`
@@ -29,3 +29,10 @@ To use this software, you have to download the product from links [above](#Downl
     Connect your LCD module to your Arduino board following this scheme. *Provided binaries are builded for this connection and for 20x4 sized LCD modules*
 
     ![Connections](./images/connections.png)
+    
+---
+    
+## Third party software
+[Qt library](https://github.com/qt)
+
+[Arduino IDE](https://arduino.cc/download)
