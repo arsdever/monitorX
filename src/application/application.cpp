@@ -2,7 +2,7 @@
 
 #include "../collector/collector.h"
 #include "../collector/device_informator.h"
-#include "../shared/data.h"
+#include "../client/data.h"
 #include "../extras/comport.h"
 
 #include "cpu_grapher.h"

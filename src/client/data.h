@@ -1,7 +1,6 @@
 #pragma once
 
-typedef int16_t __int16;
-typedef int8_t __int8;
+#include <stdint.h>
 
 enum PRESCALER
 {
@@ -16,21 +15,21 @@ enum PRESCALER
 struct INFO
 {
 	char signature[4];
-	__int16 year;
-	__int16 memoryTotal;
-	__int16 memoryFree;
-	__int16 hddTotal;
-	__int16 hddFree;
-	__int8 month;
-	__int8 day;
-	__int8 hour;
-	__int8 minu;
-	__int8 sec;
-	__int8 cores;
-	__int8 memoryTotalPrescaler;
-	__int8 memoryFreePrescaler;
-	__int8 hddTotalPrescaler;
-	__int8 hddFreePrescaler;
-	__int8 cpuUsageUser;
-	__int8 cpuUsageKernel;
+	uint16_t year;
+	uint16_t memoryTotal;
+	uint16_t memoryFree;
+	uint16_t hddTotal;
+	uint16_t hddFree;
+	uint8_t month;
+	uint8_t day;
+	uint8_t hour;
+	uint8_t minu;
+	uint8_t sec;
+	uint8_t cores;
+	uint8_t memoryTotalPrescaler;
+	uint8_t memoryFreePrescaler;
+	uint8_t hddTotalPrescaler;
+	uint8_t hddFreePrescaler;
+	uint8_t cpuUsageUser;
+	uint8_t cpuUsageKernel;
 };

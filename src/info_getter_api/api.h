@@ -1,7 +1,7 @@
 #pragma once
 
 #include "api_global.h"
-#include "../shared/data.h"
+#include "../client/data.h"
 
 extern "C" API_EXPORT void GetAllInfo(INFO *data);
 

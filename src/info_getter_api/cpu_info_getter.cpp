@@ -17,19 +17,16 @@ static void CalculateCPULoad(uint64_t idleTicks, uint64_t kernelTicks, uint64_t 
 	uint64_t idleTicksSinceLastTime = idleTicks - _previousIdleTicks;
 	uint64_t totalTicksSinceLastTime = kernelTicksSinceLastTime + userTicksSinceLastTime;
 
-	*kernelLoad = (kernelTicksSinceLastTime > 0 ? ((double)(kernelTicksSinceLastTime - idleTicksSinceLastTime) / (double)totalTicksSinceLastTime) : 0.0);
-	*userLoad = (userTicksSinceLastTime > 0 ? ((double)userTicksSinceLastTime / (double)totalTicksSinceLastTime) : 0.0);
-	*idleLoad = (idleTicksSinceLastTime > 0 ? ((double)idleTicksSinceLastTime / (double)totalTicksSinceLastTime) : 0.0);
-	//*kernelLoad = 0;
-	//*userLoad = 1.0 - ((userTicksSinceLastTime > 0) ? ((double)idleTicksSinceLastTime/ (kernelTicksSinceLastTime + userTicksSinceLastTime)) : 0.0);
-	//*idleLoad = 0;
+	*kernelLoad = (kernelTicksSinceLastTime > 0 ? ((float)(kernelTicksSinceLastTime - idleTicksSinceLastTime) / (float)totalTicksSinceLastTime) : 0.0f);
+	*userLoad = (userTicksSinceLastTime > 0 ? ((float)userTicksSinceLastTime / (float)totalTicksSinceLastTime) : 0.0f);
+	*idleLoad = (idleTicksSinceLastTime > 0 ? ((float)idleTicksSinceLastTime / (float)totalTicksSinceLastTime) : 0.0f);
 
 	_previousKernelTicks = kernelTicks;
 	_previousUserTicks = userTicks;
 	_previousIdleTicks = idleTicks;
 }
 
-void WriteSize(__int8& prescaler, __int16& size, uint64_t value)
+void WriteSize(uint8_t& prescaler, uint16_t& size, uint64_t value)
 {
 	prescaler = 0;
 	while (value > 65535)
@@ -38,7 +35,7 @@ void WriteSize(__int8& prescaler, __int16& size, uint64_t value)
 		value >>= 10;
 	}
 
-	size = value;
+	size = (uint16_t)value;
 }
 
 extern "C" API_EXPORT void GetAllInfo(INFO *data)
@@ -115,7 +112,7 @@ extern "C" API_EXPORT void GetCPUInfo(INFO *data)
 	FILETIME idleTime, kernelTime, userTime;
 	SYSTEM_INFO sysInfo;
 	GetSystemInfo(&sysInfo);
-	float userLoad = -1;
+	float userLoad = -1;	
 	float kernelLoad = -1;
 	float idleLoad = -1;
 	if (GetSystemTimes(&idleTime, &kernelTime, &userTime))
