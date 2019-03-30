@@ -28,4 +28,4 @@ For this module you will need to upload code to an Atmega MCU. You can use [Ardu
 
 Connect your LCD module to your Arduino board following this scheme. *Provided binaries are builded for this connection and for 20x4 sized LCD modules*
 
-![Connections](/images/connections.png)
+![Connections](./images/connections.png)
