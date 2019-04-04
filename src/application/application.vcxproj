@@ -117,12 +117,10 @@
   <ItemGroup>
     <ClCompile Include="application.cpp" />
     <ClCompile Include="app_tray_icon.cpp" />
-    <ClCompile Include="informator.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="app_tray_icon.h" />
-    <ClInclude Include="informator.h" />
     <QtMoc Include="application.h" />
   </ItemGroup>
   <ItemGroup>
