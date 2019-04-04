@@ -18,7 +18,16 @@ DEFINES += QT_DEPRECATED_WARNINGS GRAPHER_LIB
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += grapher.h grapher_global.h
-SOURCES += grapher.cpp
+HEADERS += grapher.h \
+            grapher_types.h \
+            grapher_global.h \
+            grapher_types/cpu_grapher.h \
+            grapher_types/ram_grapher.h \
+            grapher_types/hdd_grapher.h
+
+SOURCES += grapher.cpp \
+            grapher_types/cpu_grapher.cpp \
+            grapher_types/ram_grapher.cpp \
+            grapher_types/hdd_grapher.cpp
 
 QT += core gui widgets

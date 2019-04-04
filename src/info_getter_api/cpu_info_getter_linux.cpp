@@ -107,7 +107,6 @@ extern "C" API_EXPORT void GetCPUInfo(INFO *data)
 	std::string line;
 	std::getline(cpu_info_file_stream, line);
 	data->cores = sysconf(_SC_NPROCESSORS_ONLN);
-	data->perCoreUsage = new int8_t[data->cores * 2];
 
 	while (line != "")
 	{

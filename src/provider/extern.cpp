@@ -19,11 +19,10 @@ extern "C" PROVIDER_EXPORT void update_menu(QMenu *menu, Application *app)
 	}
 	else
 	{
-		QList<QString> keys = ComportWindows::s_com_map.keys();
+		QList<QString> keys = COMPORT_CLASS::s_com_map.keys();
 		for (QString const &port : keys)
 		{
-			QAction *action = menu->addAction(port, [app, port]()
-			{
+			menu->addAction(port, [app, port]() {
 				Comport *comport = new COMPORT_CLASS(port.toStdString(), 57600);
 				app->setComport(comport);
 				comport->open_port();
@@ -32,15 +31,10 @@ extern "C" PROVIDER_EXPORT void update_menu(QMenu *menu, Application *app)
 	}
 }
 
-extern "C" PROVIDER_EXPORT void add_menu(QMenu *menu, Application *app)
+extern "C" PROVIDER_EXPORT QMenu *add_menu(QMenu *menu)
 {
 	if (menu == nullptr)
-		return;
+		return nullptr;
 
-	QMenu* com_menu = menu->addMenu(QIcon(":/Resources/connect.png"), "Connect to");
-}
-
-extern "C" PROVIDER_EXPORT ComportWindows *openPort(QString const &portName)
-{
-	return new ComportWindows(portName.toStdString(), 57600);
+	return menu->addMenu(QIcon(":/Resources/connect.png"), "Connect to");
 }

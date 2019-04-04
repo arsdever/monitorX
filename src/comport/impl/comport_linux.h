@@ -1,13 +1,15 @@
 #pragma once
 
-#include "comport.h"
-#include "ordered_map.h"
+#include "../comport.h"
+#include "../ordered_map.h"
 
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
+
+#define DEFAULT_PATH "/dev/"
 
 class ComportLinux : public Comport
 {
@@ -34,4 +36,8 @@ private:
   Settings __default_settings;
   bool __is_valid : 1;
   bool __opened : 1;
+
+public:
+  static void updateComMap();
+  static OrderedMap<QString, QString> s_com_map;
 };

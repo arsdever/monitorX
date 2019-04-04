@@ -18,7 +18,11 @@ DEFINES += QT_DEPRECATED_WARNINGS COLLECTOR_LIB
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += collector.h collector_global.h device_informator.h
-SOURCES += collector.cpp device_informator.cpp
+HEADERS += collector.h \
+            collector_global.h \
+            device_informator.h
+
+SOURCES += collector.cpp \
+            device_informator.cpp
 
 QT += core

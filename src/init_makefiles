@@ -1,0 +1,9 @@
+.PHONY : final
+
+final :
+    qmake application
+    qmake collector
+    qmake comport
+    qmake grapher
+    qmake info_getter_api
+    qmake provider

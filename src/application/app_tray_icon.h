@@ -5,12 +5,13 @@
 class InterfaceRegistratorInterface;
 class Grapher;
 class Application;
+class QEvent;
 
-class ApplicationTrayIcon: public QSystemTrayIcon
+class ApplicationTrayIcon : public QSystemTrayIcon
 {
-Q_OBJECT
+	Q_OBJECT
 
-public:
+  public:
 	enum IconType
 	{
 		CPU,
@@ -19,22 +20,21 @@ public:
 		Invalid
 	};
 
-public:
+  public:
 	ApplicationTrayIcon(Application *parent = nullptr);
 
 	void registerDataSource(InterfaceRegistratorInterface *application) const;
 	IconType currentType() const;
 
-public slots:
+  public slots:
+	void updateMenu();
 	void updateInfo(qreal);
 	void changeIconType(IconType);
-	virtual void activation(QSystemTrayIcon::ActivationReason reason);
 
-private:
+  private:
 	void initContextMenu();
 	IconType __type;
 	Application *__app;
 	Grapher *__renderer;
 	Grapher **__renderers;
 };
-

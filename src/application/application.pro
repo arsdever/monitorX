@@ -21,7 +21,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += application.h cpu_grapher.h ram_grapher.h
-SOURCES += application.cpp cpu_grapher.cpp main.cpp ram_grapher.cpp
+HEADERS += application.h \
+            app_tray_icon.h \
+
+SOURCES += application.cpp \
+            app_tray_icon.cpp \
+            main.cpp \
+
+RESOURCES += res.qrc
 
 QT += core gui widgets

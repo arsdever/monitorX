@@ -6,18 +6,16 @@
 #include <QLibrary>
 #include <QMenu>
 #include <QPainter>
+#include <QMouseEvent>
 
 ApplicationTrayIcon::ApplicationTrayIcon(Application *parent)
-	: QSystemTrayIcon(parent)
-	  , __type(CPU)
-	  , __renderer(nullptr)
-	  , __renderers(new Grapher*[3])
+	: QSystemTrayIcon(parent), __type(CPU), __renderer(nullptr), __renderers(new Grapher *[3])
 {
 	__renderers[0] = new CPULoadGrapher;
 	__renderers[1] = new RAMUsageGrapher;
 	__renderers[2] = new HDDUsageGrapher;
 
-	for ( uint8_t i = 0; i < 3; ++i )
+	for (uint8_t i = 0; i < 3; ++i)
 	{
 		__renderers[i]->resize(128, 128);
 		__renderers[i]->setMaxDataCount(10);
@@ -30,17 +28,18 @@ ApplicationTrayIcon::ApplicationTrayIcon(Application *parent)
 	initContextMenu();
 
 	connect(__renderer, SIGNAL(dataChanged(qreal)), this, SLOT(updateInfo(qreal)));
-	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(activation(QSystemTrayIcon::ActivationReason)));
 }
 
 void ApplicationTrayIcon::initContextMenu()
 {
 	setContextMenu(new QMenu);
-	typedef void (* installer)(QMenu *, Application *);
-	installer const install_comport_connection = (installer) QLibrary::resolve("provider", "add_menu");
+	typedef QMenu *(*installer)(QMenu *);
+	installer install_comport_connection = (installer)QLibrary::resolve("provider", "add_menu");
 
-	if ( install_comport_connection )
-		install_comport_connection(contextMenu(), qobject_cast<Application *>(parent()));
+	if (install_comport_connection)
+		install_comport_connection(contextMenu());
+
+	connect(contextMenu(), SIGNAL(aboutToShow()), this, SLOT(updateMenu()));
 
 	QMenu *icon_type_menu = contextMenu()->addMenu("Change icon info...");
 	icon_type_menu->addAction(QIcon(":/Resources/cpu.png"), "CPU usage", [this]() { changeIconType(CPU); });
@@ -52,50 +51,51 @@ void ApplicationTrayIcon::initContextMenu()
 
 void ApplicationTrayIcon::changeIconType(IconType type)
 {
-	if ( type == currentType() )
+	if (type == currentType())
 		return;
 
 	__type = type;
-	switch ( type )
+	switch (type)
 	{
-	case CPU: __renderer = __renderers[0];
+	case CPU:
+		__renderer = __renderers[0];
 		break;
-	case RAM: __renderer = __renderers[1];
+	case RAM:
+		__renderer = __renderers[1];
 		break;
-	case HDD: __renderer = __renderers[2];
+	case HDD:
+		__renderer = __renderers[2];
 		break;
-	default: __renderer = nullptr;
+	default:
+		__renderer = nullptr;
 		__type = Invalid;
 	}
 }
 
-void ApplicationTrayIcon::activation(QSystemTrayIcon::ActivationReason reason)
+void ApplicationTrayIcon::updateMenu()
 {
-	if (reason != QSystemTrayIcon::Context)
-		return;
-
 	QList<QMenu *> menus = contextMenu()->findChildren<QMenu *>();
 
 	// find menu by name "Connect to"
 	QMenu *connect_menu = nullptr;
 	for (QMenu *menu : menus)
 	{
-		if ( menu != nullptr && menu->title() == "Connect to" )
+		if (menu != nullptr && menu->title() == "Connect to")
 		{
 			connect_menu = menu;
 			break;
 		}
 	}
 
-	if ( connect_menu == nullptr )
+	if (connect_menu == nullptr)
 		return;
 
 	// update available comport list
-	typedef void(*installer)(QMenu *, Application *);
-	installer const install_comport_connection = (installer) QLibrary::resolve("provider", "update_menu");
+	typedef void (*updater)(QMenu *, Application *);
+	updater comport_list_update = (updater)QLibrary::resolve("provider", "update_menu");
 
-	if (install_comport_connection)
-		install_comport_connection(connect_menu, qobject_cast<Application *>(parent()));
+	if (comport_list_update)
+		comport_list_update(connect_menu, qobject_cast<Application *>(parent()));
 }
 
 ApplicationTrayIcon::IconType ApplicationTrayIcon::currentType() const { return __type; }
@@ -110,7 +110,7 @@ void ApplicationTrayIcon::registerDataSource(InterfaceRegistratorInterface *appl
 void ApplicationTrayIcon::updateInfo(qreal usage)
 {
 	setToolTip(QString("CPU usage: %1%").arg(usage));
-	if ( !__renderer || __type == Invalid )
+	if (!__renderer || __type == Invalid)
 	{
 		setIcon(QIcon(":/Resources/icon.png"));
 		return;
