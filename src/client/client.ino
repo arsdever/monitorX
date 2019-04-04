@@ -5,6 +5,7 @@
 #include "cpu_graph_screen.h"
 #include "ram_screen.h"
 #include "hdd_screen.h"
+#include "date_decorated_screen.h"
 
 INFO visible_data;
 LiquidCrystal lcd(2, 3, 4, 5, 6, 7, 8);
@@ -32,7 +33,7 @@ void setup()
   lcd.clear();
   lcd.setCursor(10 - message.length() / 2, 1);
   lcd.print(message);
-  screen = &cpu_graph_screen;
+  screen = new DateDecoratedScreen(&cpu_graph_screen);
 }
 
 void loop()

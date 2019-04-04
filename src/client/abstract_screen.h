@@ -14,14 +14,14 @@ public:
   }
   virtual ~AbstractScreen(){};
 
-  LiquidCrystal *device() const { return __device; }
+  virtual LiquidCrystal *device() const { return __device; }
 
   virtual void draw() const = 0;
   virtual void scrollDown() = 0;
   virtual void scrollUp() = 0;
 
-  uint8_t width() const { return __width; }
-  uint8_t height() const { return __height; }
+  virtual uint8_t width() const { return __width; }
+  virtual uint8_t height() const { return __height; }
 
 private:
   LiquidCrystal *__device;
