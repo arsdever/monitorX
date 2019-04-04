@@ -1,12 +1,12 @@
 #pragma once
 
-#include "comport.h"
+#include "../comport.h"
 #include "ordered_map.h"
 
 #include <windows.h>
 #include <string>
 
-class ComportWindows : public Comport
+class COMPORT_EXPORT ComportWindows final: public Comport
 {
 public:
 	ComportWindows(std::string const &port_name, int baudrate = 9600, int bytesize = 8, int stopbits = 1, int parity = 0, int dtrcontrol = DTR_CONTROL_ENABLE);
@@ -23,7 +23,7 @@ public:
 	void close_port() override;
 
 private:
-	bool configurate();
+	bool configure() const;
 
 private:
 	std::string __port_name;
@@ -34,5 +34,5 @@ private:
 
 public:
 	static void updateComMap();
-	static OrderedMap<QString, QString> s_comMap;
+	static OrderedMap< QString, QString > s_com_map;
 };

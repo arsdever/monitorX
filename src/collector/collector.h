@@ -9,9 +9,6 @@
 
 class DataRequestInterface;
 
-template <typename __type>
-class QVector;
-
 class COLLECTOR_EXPORT Collector : public QObject
 {
 

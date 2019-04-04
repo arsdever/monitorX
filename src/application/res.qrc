@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/icon.png</file>
+        <file>Resources/connect.png</file>
+        <file>Resources/cpu.png</file>
+        <file>Resources/hdd.png</file>
+        <file>Resources/ram.png</file>
+        <file>Resources/exit.png</file>
+    </qresource>
+</RCC>

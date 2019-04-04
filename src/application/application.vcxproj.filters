@@ -36,18 +36,15 @@
     <ClCompile Include="application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpu_grapher.cpp">
+    <ClCompile Include="informator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ram_grapher.cpp">
+    <ClCompile Include="app_tray_icon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cpu_grapher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ram_grapher.h">
+    <ClInclude Include="informator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -55,5 +52,13 @@
     <QtMoc Include="application.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="app_tray_icon.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="res.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

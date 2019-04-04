@@ -12,6 +12,45 @@ enum PRESCALER
 	PB
 };
 
+inline const char* prescalerToString(uint8_t sc)
+{
+	switch (sc)
+	{
+	case B:
+		return "B";
+	case KB:
+		return "KB";
+	case MB:
+		return "MB";
+	case GB:
+		return "GB";
+	case TB:
+		return "TB";
+	case PB:
+		return "PB";
+	}
+	return "";
+}
+
+static uint64_t memScaleUp(uint16_t mem_size, uint8_t prescaler)
+{
+	uint64_t result = mem_size;
+	while (prescaler--)
+		result <<= 10;
+	return result;
+}
+
+static uint16_t memScaleDown(uint64_t mem_size, uint8_t & prescaler)
+{
+	prescaler = 0;
+	while (mem_size > 65535)
+	{
+		mem_size >>= 10;
+		++prescaler;
+	}
+	return (uint16_t)mem_size;
+}
+
 struct INFO
 {
 	char signature[4];

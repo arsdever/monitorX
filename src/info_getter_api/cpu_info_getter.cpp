@@ -26,18 +26,6 @@ static void CalculateCPULoad(uint64_t idleTicks, uint64_t kernelTicks, uint64_t 
 	_previousIdleTicks = idleTicks;
 }
 
-void WriteSize(uint8_t& prescaler, uint16_t& size, uint64_t value)
-{
-	prescaler = 0;
-	while (value > 65535)
-	{
-		++prescaler;
-		value >>= 10;
-	}
-
-	size = (uint16_t)value;
-}
-
 extern "C" API_EXPORT void GetAllInfo(INFO *data)
 {
 	if (data == nullptr)
@@ -132,8 +120,8 @@ extern "C" API_EXPORT void GetRAMInfo(INFO *data)
 	MEMORYSTATUSEX memInfoEx = { sizeof MEMORYSTATUSEX };
 	GlobalMemoryStatusEx(&memInfoEx);
 
-	WriteSize(data->memoryTotalPrescaler, data->memoryTotal, memInfoEx.ullTotalPhys);
-	WriteSize(data->memoryFreePrescaler, data->memoryFree, memInfoEx.ullAvailPhys);
+	data->memoryTotal = memScaleDown(memInfoEx.ullTotalPhys, data->memoryTotalPrescaler);
+	data->memoryFree = memScaleDown(memInfoEx.ullAvailPhys, data->memoryFreePrescaler);
 }
 
 extern "C" API_EXPORT void GetHDDInfo(INFO *data)
@@ -150,7 +138,7 @@ extern "C" API_EXPORT void GetHDDInfo(INFO *data)
 	freeSize *= bytes;
 	freeSize *= sectors;
 
-	WriteSize(data->hddTotalPrescaler, data->hddTotal, totalSize);
-	WriteSize(data->hddFreePrescaler, data->hddFree, freeSize);
+	data->hddTotal = memScaleDown(totalSize , data->hddTotalPrescaler);
+	data->hddFree = memScaleDown(freeSize, data->hddFreePrescaler);
 
 }

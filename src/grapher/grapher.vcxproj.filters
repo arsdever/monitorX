@@ -24,20 +24,44 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Header Files\grapher_types">
+      <UniqueIdentifier>{c95a8ad4-d10c-4428-9f23-58b379b83f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\grapher_types">
+      <UniqueIdentifier>{3a4dc66a-da73-4ae1-aaa7-3c05299395ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="grapher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="grapher_global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="grapher_types\cpu_grapher.cpp">
+      <Filter>Source Files\grapher_types</Filter>
+    </ClCompile>
+    <ClCompile Include="grapher_types\hdd_grapher.cpp">
+      <Filter>Source Files\grapher_types</Filter>
+    </ClCompile>
+    <ClCompile Include="grapher_types\ram_grapher.cpp">
+      <Filter>Source Files\grapher_types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="grapher.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="grapher_types\cpu_grapher.h">
+      <Filter>Header Files\grapher_types</Filter>
+    </QtMoc>
+    <QtMoc Include="grapher_types\ram_grapher.h">
+      <Filter>Header Files\grapher_types</Filter>
+    </QtMoc>
+    <QtMoc Include="grapher_types\hdd_grapher.h">
+      <Filter>Header Files\grapher_types</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="grapher_global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

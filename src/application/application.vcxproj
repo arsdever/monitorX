@@ -29,11 +29,11 @@
     <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(outputdir)\</OutDir>
+    <OutDir>$(outputdir)\$(configuration.toLower())\</OutDir>
     <IntDir>$(outdir)obj\$(projectname.toLower())\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(outputdir)\</OutDir>
+    <OutDir>$(outputdir)\$(configuration.toLower())\</OutDir>
     <IntDir>$(outdir)obj\$(projectname.toLower())\</IntDir>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -116,25 +116,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
-    <ClCompile Include="cpu_grapher.cpp" />
+    <ClCompile Include="app_tray_icon.cpp" />
+    <ClCompile Include="informator.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ram_grapher.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ram_grapher.h" />
+    <QtMoc Include="app_tray_icon.h" />
+    <ClInclude Include="informator.h" />
     <QtMoc Include="application.h" />
-    <ClInclude Include="cpu_grapher.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\collector\collector.vcxproj">
       <Project>{5b71c7d6-3515-441a-99a7-61dd1982df72}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\extras\extras.vcxproj">
+    <ProjectReference Include="..\comport\comport.vcxproj">
       <Project>{b12702ad-abfb-343a-a199-8e24837244a3}</Project>
     </ProjectReference>
     <ProjectReference Include="..\grapher\grapher.vcxproj">
       <Project>{2b0666be-4ce6-471c-924e-eab1911ec783}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="res.qrc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

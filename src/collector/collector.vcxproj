@@ -29,11 +29,11 @@
     <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(outputdir)\</OutDir>
+    <OutDir>$(outputdir)\$(configuration.toLower())\</OutDir>
     <IntDir>$(outdir)obj\$(projectname.toLower())\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(outputdir)\</OutDir>
+    <OutDir>$(outputdir)\$(configuration.toLower())\</OutDir>
     <IntDir>$(outdir)obj\$(projectname.toLower())\</IntDir>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">

@@ -4,34 +4,35 @@
 
 Grapher::Grapher(QWidget *parent)
 	: QWidget(parent)
-	, __v_range(qInf(), -qInf())
 	, __range_fixed(false)
+	, __draw_background(true)
+	, __draw_grid(true)
+	, __draw_label(true)
+	, __fill_graph(true)
+	, __max_data_count(50)
+	, __background_color(32,32,32)
+	, __grid_color(74,74,74)
+	, __graph_color(65,186,21)
+	, __label_color(125,125,125)
 {
-}
-
-void Grapher::popFront()
-{
-	__points.pop_front();
+	setAttribute(Qt::WA_TranslucentBackground, true);
 }
 
 quint32 Grapher::count()
 {
-	return __points.size();
+	return getData().size();
 }
 
 void Grapher::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
 	painter.setRenderHints(QPainter::Antialiasing);
-	painter.fillRect(rect(), Qt::white);
-	QPainterPath path;
-	path.moveTo(-1, height());
-	for (int i = 0; i < __points.size(); ++i)
+
+	if (isDrawingBackground())
 	{
-		path.lineTo(map(i, __points[i]));
+		painter.fillRect(rect(), getBackgroundColor());
 	}
-	path.lineTo(width(), height());
-	path.closeSubpath();
+
 	QPainterPath grid;
 	for (int i = 1; i < 10; ++i)
 	{
@@ -40,14 +41,39 @@ void Grapher::paintEvent(QPaintEvent *event)
 		grid.moveTo((qreal)width() / 10 * i, 0);
 		grid.lineTo((qreal)width() / 10 * i, height());
 	}
-	painter.setPen(QPen(Qt::gray, 1));
-	painter.setFont(QFont("Ubuntu", 72));
-	if(!__points.empty())
-		painter.drawText(rect(), Qt::AlignCenter, tr("%1").arg(qRound(__points.back() * 100)));
+	if (isDrawingLabel())
+	{
+		painter.setPen(QPen(getLabelColor(), 1));
+		painter.setFont(QFont("Ubuntu", 72));
+		painter.drawText(rect(), Qt::AlignCenter, tr("%1").arg(qRound(getValueToShow() * 100)));
+	}
+
 	painter.setBrush(Qt::NoBrush);
-	painter.drawPath(grid);
-	painter.setBrush(QColor(255, 0, 0, 128));
-	painter.setPen(QPen(Qt::red, 2));
+
+	if (isDrawingGrid())
+	{
+		painter.setPen(getGridColor());
+		painter.drawPath(grid);
+	}
+
+	QColor fill_color;
+	if (isFillingGraph())
+	{
+		fill_color = getGraphColor();
+		fill_color.setAlpha(fill_color.alpha()* .5);
+		painter.setBrush(fill_color);
+	}
+
+	QPainterPath path;
+	path.moveTo(-1, height());
+	for (int i = 0; i < getData().size(); ++i)
+	{
+		path.lineTo(map(i, getData().at(i)));
+	}
+	path.lineTo(width(), height());
+	path.closeSubpath();
+
+	painter.setPen(QPen(getGraphColor(), 1));
 	painter.drawPath(path);
 }
 
@@ -55,38 +81,38 @@ QPoint Grapher::map(quint32 index, qreal point)
 {
 	QSize s = size();
 	QPoint result;
-	point -= __v_range.first;
+	point -= getVRange().first;
 
-	if (__v_range.second - __v_range.first != 0)
-		result.setY(s.height() - s.height() * point / (__v_range.second - __v_range.first));
+	if (getVRange().second - getVRange().first != 0)
+		result.setY(s.height() - s.height() * point / (getVRange().second - getVRange().first));
 	else
 		result.setY(s.height() / 2);
 
-	if (index != __points.size())
-		result.setX(s.width() * (qreal)index / (qreal)(__points.size() - 1));
+	if (index != getData().size())
+		result.setX(s.width() * (qreal)index / (qreal)(getData().size() - 1));
 	else
 		result.setX(s.width() / 2);
 
 	return result;
 }
 
-void Grapher::setFixedRange(qreal min, qreal max)
-{
-	__v_range.first = min;
-	__v_range.second = max;
-}
+int Grapher::getMaxDataCount() const { return __max_data_count; }
+void Grapher::setMaxDataCount(int max_data_count) { __max_data_count = max_data_count; }
 
-Grapher& Grapher::operator << (qreal const& point)
-{
-	__points << point;
-	if (__range_fixed)
-		return *this;
+bool Grapher::isDrawingBackground() const { return __draw_background; }
+bool Grapher::isDrawingLabel() const { return __draw_label; }
+bool Grapher::isDrawingGrid() const { return __draw_grid; }
+bool Grapher::isFillingGraph() const { return __fill_graph; }
+QColor Grapher::getBackgroundColor() const { return __background_color; }
+QColor Grapher::getGridColor() const { return __grid_color; }
+QColor Grapher::getGraphColor() const { return __graph_color; }
+QColor Grapher::getLabelColor() const { return __label_color; }
 
-	if (point < __v_range.first)
-		__v_range.first = point;
-
-	if (point > __v_range.second)
-		__v_range.second = point;
-
-	return *this;
-}
+void Grapher::setDrawBackground(bool value) { __draw_background = value; emit drawBackgroundChanged();}
+void Grapher::setDrawGrid(bool value) { __draw_grid = value; emit drawGridChanged();}
+void Grapher::setDrawLabel(bool value) { __draw_label = value; emit drawLabelChanged();}
+void Grapher::setFillGraph(bool value) { __fill_graph = value; emit fillGraphChanged();}
+void Grapher::setBackgroundColor(QColor const &color) { __background_color = color; emit backgroundColorChanged();}
+void Grapher::setGridColor(QColor const &color) { __grid_color = color;emit gridColorChanged();}
+void Grapher::setGraphColor(QColor const &color) { __graph_color = color; emit graphColorChanged();}
+void Grapher::setLabelColor(QColor const &color) { __label_color = color; emit labelColorChanged();}

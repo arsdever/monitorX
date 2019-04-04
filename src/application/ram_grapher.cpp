@@ -8,10 +8,12 @@ RAMUsageGrapher::RAMUsageGrapher(QWidget *parent)
 
 Grapher& RAMUsageGrapher::operator <<(qreal const& point)
 {
-	if (count() > 150)
+	if (count() > 50)
 	{
 		popFront();
 	}
 
-	return Grapher::operator << (point);
+	Grapher& ret = Grapher::operator << (point);
+	update();
+	return ret;
 }

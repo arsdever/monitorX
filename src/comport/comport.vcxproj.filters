@@ -26,21 +26,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="extras_global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="comport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ordered_map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="comport_win.h">
+    <ClInclude Include="comports.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="impl\comport_win.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="comport_win.cpp">
+    <ClCompile Include="impl\comport_win.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
