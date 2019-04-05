@@ -15,14 +15,14 @@ class GRAPHER_EXPORT Grapher : public QWidget
 
 	Q_OBJECT
 
-		Q_PROPERTY(bool __draw_background READ isDrawingBackground WRITE setDrawBackground NOTIFY drawBackgroundChanged)
-		Q_PROPERTY(bool __draw_grid READ isDrawingGrid WRITE setDrawGrid NOTIFY drawGridChanged)
-		Q_PROPERTY(bool __draw_label READ isDrawingLabel WRITE setDrawLabel NOTIFY drawLabelChanged)
-		Q_PROPERTY(bool __fill_graph READ isFillingGraph WRITE setFillGraph NOTIFY fillGraphChanged)
-		Q_PROPERTY(QColor __background_color READ getBackgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
-		Q_PROPERTY(QColor __grid_color READ getGridColor WRITE setBackgroundColor NOTIFY gridColorChanged)
-		Q_PROPERTY(QColor __graph_color READ getGraphColor WRITE setGraphColor NOTIFY graphColorChanged)
-		Q_PROPERTY(QColor __label_color READ getLabelColor WRITE setLabelColor NOTIFY labelColorChanged)
+		Q_PROPERTY(bool draw_background READ isDrawingBackground WRITE setDrawBackground NOTIFY drawBackgroundChanged)
+		Q_PROPERTY(bool draw_grid READ isDrawingGrid WRITE setDrawGrid NOTIFY drawGridChanged)
+		Q_PROPERTY(bool draw_label READ isDrawingLabel WRITE setDrawLabel NOTIFY drawLabelChanged)
+		Q_PROPERTY(bool fill_graph READ isFillingGraph WRITE setFillGraph NOTIFY fillGraphChanged)
+		Q_PROPERTY(QColor background_color READ getBackgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
+		Q_PROPERTY(QColor grid_color READ getGridColor WRITE setBackgroundColor NOTIFY gridColorChanged)
+		Q_PROPERTY(QColor graph_color READ getGraphColor WRITE setGraphColor NOTIFY graphColorChanged)
+		Q_PROPERTY(QColor label_color READ getLabelColor WRITE setLabelColor NOTIFY labelColorChanged)
 
 public:
 	Grapher(QWidget *parent = nullptr);

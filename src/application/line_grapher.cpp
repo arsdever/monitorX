@@ -5,11 +5,9 @@
 #include <QDebug>
 #include <QMetaProperty>
 
-LineGrapher::LineGrapher()
-    : __value(0)
-{
-    connect(this, SIGNAL(dataChanged(qreal)), this, SLOT(animate(qreal)));
-}
+LineGrapher::LineGrapher(QWidget *parent)
+	: CPULoadGrapher(parent)
+	  , __value(0) { connect(this, SIGNAL(dataChanged(qreal)), this, SLOT(animate(qreal))); }
 
 void LineGrapher::paintEvent(QPaintEvent *event)
 {
@@ -17,17 +15,19 @@ void LineGrapher::paintEvent(QPaintEvent *event)
         return;
 
     QPainter painter(this);
-    painter.setPen(QPen(getGraphColor(), 2));
-    painter.drawLine(width() / 2 * (1 - __value), 1, width() / 2 * (__value + 1), 1);
+	QColor clr;
+	painter.fillRect(0, 0, width(), 2, Qt::black);
+	clr.setHslF((1 - __value) / 3.0, 1, .5);
+    painter.fillRect(width() / 2 * (1 - __value), 0, width() * __value, 2, clr);
 }
 
 void LineGrapher::animate(qreal)
 {
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "value");
-    animation->setDuration(1000);
-    animation->setEasingCurve(QEasingCurve::SineCurve);
-    animation->setStartValue(__value);
-    animation->setEndValue(getValueToShow());
-    connect(animation, SIGNAL(valueChanged(const QVariant &)), this, SLOT(update()));
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
+    QPropertyAnimation *value_animation = new QPropertyAnimation(this, "value");
+    value_animation->setDuration(1000);
+    value_animation->setEasingCurve(QEasingCurve::SineCurve);
+    value_animation->setStartValue(__value);
+    value_animation->setEndValue(getValueToShow());
+    connect(value_animation, SIGNAL(valueChanged(const QVariant &)), this, SLOT(update()));
+    value_animation->start(QAbstractAnimation::DeleteWhenStopped);
 }

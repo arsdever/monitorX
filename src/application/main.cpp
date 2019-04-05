@@ -19,15 +19,15 @@ int main(int argc, char *argv[])
 	grapher.setFixedSize(QApplication::desktop()->screenGeometry().width(), 2);
 	grapher.move(0, 0);
 	app.GetInterface_InterfaceRegistratorInterface()->registerInterface(grapher.GetInterface_InfoConsumerInterface());
-	grapher.setWindowFlags(grapher.windowFlags() | Qt::WindowTransparentForInput | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+	grapher.setWindowFlags(grapher.windowFlags() | Qt::WindowTransparentForInput | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
 	grapher.setAttribute(Qt::WA_TranslucentBackground);
 	grapher.setAttribute(Qt::WA_AlwaysStackOnTop);
 	grapher.setDrawBackground(false);
 	grapher.setDrawGrid(false);
 	grapher.setDrawLabel(false);
 	grapher.setGraphColor(QColor(48, 255, 0));
-	grapher.show();
 	grapher.setMaxDataCount(200);
+	grapher.show();
 
 	return a.exec();
 }

@@ -9,7 +9,7 @@ class LineGrapher : public CPULoadGrapher
     Q_PROPERTY(qreal value READ getValue WRITE setValue)
 
   public:
-    LineGrapher();
+    LineGrapher(QWidget *parent = nullptr);
 
     void setValue(qreal value)
     {
