@@ -4,6 +4,7 @@
 
 #include <QDesktopWidget>
 #include <QApplication>
+#include "line_grapher.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,9 +15,9 @@ int main(int argc, char *argv[])
 	tray_icon.registerDataSource(app.GetInterface_InterfaceRegistratorInterface());
 	tray_icon.show();
 
-	CPULoadGrapher grapher;
-	grapher.setFixedSize(QApplication::desktop()->screenGeometry().width(), 30);
-	grapher.move(0, QApplication::desktop()->screenGeometry().height() - grapher.height());
+	LineGrapher grapher;
+	grapher.setFixedSize(QApplication::desktop()->screenGeometry().width(), 2);
+	grapher.move(0, 0);
 	app.GetInterface_InterfaceRegistratorInterface()->registerInterface(grapher.GetInterface_InfoConsumerInterface());
 	grapher.setWindowFlags(grapher.windowFlags() | Qt::WindowTransparentForInput | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 	grapher.setAttribute(Qt::WA_TranslucentBackground);

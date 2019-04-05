@@ -23,10 +23,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # Input
 HEADERS += application.h \
             app_tray_icon.h \
+            line_grapher.h
 
 SOURCES += application.cpp \
             app_tray_icon.cpp \
             main.cpp \
+            line_grapher.cpp
 
 RESOURCES += res.qrc
 
