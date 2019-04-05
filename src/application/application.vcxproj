@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="application.cpp" />
     <ClCompile Include="app_tray_icon.cpp" />
+    <ClCompile Include="line_grapher.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +137,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="res.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="line_grapher.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

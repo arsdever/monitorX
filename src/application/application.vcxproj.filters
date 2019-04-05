@@ -39,12 +39,18 @@
     <ClCompile Include="app_tray_icon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="line_grapher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="application.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="app_tray_icon.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="line_grapher.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
